@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<settings>
+
+  <proxies>
+<!--     <proxy> -->
+<!--       <id>optional</id> -->
+<!--       <active>true</active> -->
+<!--       <protocol>http</protocol> -->
+<!--       <host>localhost</host> -->
+<!--       <port>80</port> -->
+<!--       <nonProxyHosts>*.org|*.com</nonProxyHosts> -->
+<!--     </proxy> -->
+  </proxies>
+  
+  <mirrors>
+    <mirror>
+      <id>nexus</id>
+      <mirrorOf>central</mirrorOf>
+      <url>${MVNREPO_URL}/repository/${MVNREPO_CENTRAL}</url>
+    </mirror>
+    
+   	<mirror>
+      <id>mule-extra-repos</id>
+      <mirrorOf>mule-public</mirrorOf>
+      <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_PUBLIC}</url>
+    </mirror>
+    
+    <mirror>
+      <id>Mule</id>
+      <mirrorOf>MuleRepository</mirrorOf>
+      <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_EE}</url>
+    </mirror>
+  </mirrors>
+
+
+  <servers>
+
+<!-- the credentials for mule repository are not required when the mirror is configured - repo proxy config contains mule credentials -->
+    <server>
+      <id>MuleRepository</id>
+      <username>${MULEREPO_USER}</username>
+      <password>${MULEREPO_PASSWORD}</password>
+    </server>
+    
+    <server>
+      <id>github.com</id>
+      <username>${SCM_USER}</username>
+      <password>${SCM_PASSWORD}</password>
+    </server>
+
+    <server>
+      <id>nexus</id>
+      <username>${MVNREPO_USER}</username>
+      <password>${MVNREPO_PASSWORD}</password>
+    </server>
+
+  </servers>
+
+  <pluginGroups>
+    <pluginGroup>org.mule.tools</pluginGroup>
+  </pluginGroups>
+
+  <profiles>
+
+    <profile>
+      <id>mule-extra-repos</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>mule-public</id>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>mule-public</id>
+          <url>https://repository.mulesoft.org/nexus/content/repositories/public</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+    <profile>
+      <id>Mule</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>MuleRepository</id>
+          <name>MuleRepository</name>
+          <url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+
+    <profile>
+      <id>nexus</id>
+      <repositories>
+        <repository>
+          <id>central</id>
+          <url>http://central</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+      </repositories>
+     <pluginRepositories>
+        <pluginRepository>
+          <id>central</id>
+          <url>http://central/</url>
+          <releases><enabled>true</enabled></releases>
+          <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+
+  </profiles>
+
+  <activeProfiles>
+    <activeProfile>nexus</activeProfile>
+  </activeProfiles>
+
+</settings>
