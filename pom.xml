@@ -9,7 +9,7 @@
 	<name>Mule hello-world Application</name>
 
 	<scm>
-		<developerConnection>scm:git:https://${SCM_USER}@github.com/igor-repka/cicd_hello_world.git</developerConnection>
+		<developerConnection>scm:git:https://${SCM_USER}@github.com/mulesoft-consulting/cicd_build_hello_world.git</developerConnection>
 	  <tag>HEAD</tag>
   </scm>
 
