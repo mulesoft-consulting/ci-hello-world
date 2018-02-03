@@ -16,7 +16,7 @@ pipeline {
         SCM_USER = credentials('scm_user')
         SCM_PASSWORD = credentials('scm_psswd')
         
-        MVNREPO_URL = 'http://172.17.0.3:8081'
+        MVNREPO_URL = 'http://172.17.0.2:8081'
         MVNREPO_CENTRAL = 'maven-central/'
         MVNREPO_MULE_EE = 'maven-mule-ee/'
         MVNREPO_MULE_PUBLIC = 'maven-mule-public/'
