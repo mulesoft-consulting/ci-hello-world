@@ -24,6 +24,6 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
     
     <flow name="hello-worldFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/test" allowedMethods="GET" doc:name="HTTP"/>
-        <set-payload value="{&quot;status&quot;: &quot;Well done! Application is deployed and running!&quot;}" doc:name="Set Payload"/>
+        <set-payload value="{&quot;status&quot;: &quot;Well done! Application is deployed and running!&quot;}" doc:name="Set Payload" />
     </flow>
 </mule>
