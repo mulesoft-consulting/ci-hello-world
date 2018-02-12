@@ -39,6 +39,7 @@
 
 		<!-- internal maven repository prop -->
 		<maven.repo.url>http://172.17.0.2:8081</maven.repo.url>
+		<!--<maven.repo.url>http://localhost:8888</maven.repo.url>-->
 		<maven.repo.snapshots>maven-snapshots</maven.repo.snapshots>
 		<maven.repo.releases>maven-releases</maven.repo.releases>
 	</properties>
@@ -53,6 +54,30 @@
 		</resources>
 
 		<plugins>
+			<plugin>
+			    <groupId>org.mule.tools.maven</groupId>
+			    <artifactId>mule-maven-plugin</artifactId>
+			    <version>2.2.1</version>
+			    <configuration>
+			        <deploymentType>arm</deploymentType>
+			        <username>igor_repka_v2</username>
+			        <password>${anypoint_password}</password>
+			        <target>summer</target>
+			        <!-- One of: server, serverGroup, cluster -->
+			        <targetType>server</targetType>
+			        <environment>TEST</environment>
+			    </configuration>
+			    <executions>
+			        <execution>
+			            <id>deploy</id>
+			            <phase>deploy</phase>
+			            <goals>
+			                <goal>deploy</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-app-maven-plugin</artifactId>

@@ -20,7 +20,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
              location="classpath:${project.artifactId}-${app.build.version}.properties" />
   	</spring:beans>
   	
-    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8084" doc:name="HTTP Listener Configuration"/>
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8085" doc:name="HTTP Listener Configuration"/>
     
     <flow name="hello-worldFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/test" allowedMethods="GET" doc:name="HTTP"/>
