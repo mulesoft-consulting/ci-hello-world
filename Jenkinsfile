@@ -13,6 +13,7 @@ pipeline {
         MVNREPO_PASSWORD = credentials('nexus_psswd')
         MULEREPO_USER     = credentials('mulerepo_usr')
         MULEREPO_PASSWORD = credentials('mulerepo_psswd')
+        MULEANYPOINT_PASSWORD = credentials('anypoint_password')
         SCM_USER = credentials('scm_user')
         SCM_PASSWORD = credentials('scm_psswd')
         

@@ -61,7 +61,7 @@
 			    <configuration>
 			        <deploymentType>arm</deploymentType>
 			        <username>igor_repka_v2</username>
-			        <password>${anypoint_password}</password>
+			        <password>${MULEANYPOINT_PASSWORD}</password>
 			        <target>summer</target>
 			        <!-- One of: server, serverGroup, cluster -->
 			        <targetType>server</targetType>
