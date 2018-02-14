@@ -14,5 +14,5 @@ Contains predefined build and deployment pipelines.
 - Versatile: Pipelines support complex real-world continuous delivery requirements, including the ability to fork/join, loop, and perform work in parallel.
 
 ### How to use
-TBD
+TBD -
 
