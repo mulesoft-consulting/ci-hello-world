@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mule.deploy.test</groupId>
 	<artifactId>hello-world-api</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<packaging>mule</packaging>
 	<name>Mule hello-world Application</name>
 
@@ -61,7 +61,7 @@
 			    <configuration>
 			        <deploymentType>arm</deploymentType>
 			        <username>igor_repka_v2</username>
-			        <password>${anypoint_password}</password>
+			        <password>${MULEANYPOINT_PASSWORD}</password>
 			        <target>summer</target>
 			        <!-- One of: server, serverGroup, cluster -->
 			        <targetType>server</targetType>
