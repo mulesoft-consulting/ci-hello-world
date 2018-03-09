@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mule.deploy.test</groupId>
-	<artifactId>hello-world-api</artifactId>
+	<artifactId>hello-world</artifactId>
 	<version>1.0.6-SNAPSHOT</version>
 	<packaging>mule</packaging>
 	<name>Mule hello-world Application</name>
@@ -30,12 +30,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<mule.version>3.8.5</mule.version>
+		<mule.version>3.9.0</mule.version>
 		<mule.tools.version>1.2</mule.tools.version>
 
 		<app.build.version>v1</app.build.version>
-		<munit.version>1.3.6</munit.version>
-		<mule.munit.support.version>3.8.5</mule.munit.support.version>
+		<munit.version>1.3.7</munit.version>
+		<mule.munit.support.version>3.9.1</mule.munit.support.version>
 
 		<!-- internal maven repository prop -->
 		<maven.repo.url>http://172.17.0.2:8081</maven.repo.url>
@@ -293,7 +293,14 @@
 			<version>${munit.version}</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+<!-- 	<dependency> -->
+<!--             <groupId>com.mycompany</groupId> -->
+<!--             <artifactId>test-domain</artifactId> -->
+<!--             <version>1.0.0</version> -->
+<!--             <scope>test</scope> -->
+<!--             <type>zip</type> -->
+<!--         </dependency> -->
+    </dependencies>
 
 	<repositories>
 		<repository>
