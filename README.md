@@ -95,39 +95,7 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 Once the configuratino is done you can test your Nexus deployment by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
 
-### Deployment on DEV environment
-
-<details><summary>Sample Config - on-prem runtime</summary><p>
-	
-```xml
-<plugin>
-  <groupId>org.mule.tools.maven</groupId>
-  <artifactId>mule-maven-plugin</artifactId>
-  <version>2.2.1</version>
-  <configuration>
-    <deploymentType>arm</deploymentType>
-    <username>${MULEANYPOINT_USR}</username>
-    <password>${MULEANYPOINT_PASSWORD}</password>
-    <target>summer</target>
-    <!-- One of: server, serverGroup, cluster -->
-    <targetType>server</targetType>
-    <environment>TEST</environment>
-  </configuration>
-  <executions>
-    <execution>
-      <id>deploy</id>
-      <phase>deploy</phase>
-      <goals>
-        <goal>deploy</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
-```
-
-</p></details>
-
-### MUnit
+## MUnit
 
 Chapter describes recommended best practices for automated unit testing. 
 
@@ -179,7 +147,7 @@ The diagram below captures the suggested branching strategy, which also impacts 
 * **Prod branch**: Once the release is deployed to production, code from development branch is merged to Master that represents production code.
 * **Hotfix branch**: Created from Mater / PROD branch if critical issue is identified in production and requires immediate fix.
 
-## CI/CD Pipeline design
+## CICD Pipeline design
 
 The main focus of this document is to provide detailed view on CI pipeline definition. CD pipelines are mentioned mostly to maintain completed DevOps picture.
 
@@ -187,7 +155,7 @@ The main focus of this document is to provide detailed view on CI pipeline defin
 
 ![CI pipeline design](./images/ci-pipeline-design.png)
 
-As displayed on the diagram above, package creation and deployment (to Nexus and DEV environment) is triggered only for development branch (name starts with 'dev-').
+As displayed on the diagram above, package creation and deployment (**to Nexus and DEV environment**) is triggered only for development branch (name starts with 'dev-').
 Feature branch and PROD branch do not create any packages, neither do deployment. The only purpose of these pipelines is to run the MUnit tests to ensure code quality.
 
 **Continuous Deployment**
@@ -196,13 +164,44 @@ Feature branch and PROD branch do not create any packages, neither do deployment
 
 Deployment on DEV is the only deployment considered and implemented in this example. Deployment on development environment should be triggered every time there is a commit to development brach (as per the configuration in `Jenkinsfile`, every branch starting with 'dev-' is considered as development branch). [Mule maven plugin](https://docs.mulesoft.com/mule-user-guide/v/3.9/mule-maven-plugin) is used for deployement to development environment.
 
+<details><summary>Sample DEV deployment config - on-prem runtime</summary><p>
+	
+```xml
+<plugin>
+  <groupId>org.mule.tools.maven</groupId>
+  <artifactId>mule-maven-plugin</artifactId>
+  <version>2.2.1</version>
+  <configuration>
+    <deploymentType>arm</deploymentType>
+    <username>${MULEANYPOINT_USR}</username>
+    <password>${MULEANYPOINT_PASSWORD}</password>
+    <target>summer</target>
+    <!-- One of: server, serverGroup, cluster -->
+    <targetType>server</targetType>
+    <environment>TEST</environment>
+  </configuration>
+  <executions>
+    <execution>
+      <id>deploy</id>
+      <phase>deploy</phase>
+      <goals>
+        <goal>deploy</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
+
+</p></details>
+<p></p>
+
 Special technical user should be created with specific permission to deploy applications. Production should have the separate deployment user, so user used for deployment to other environments can't be abused for PROD deployment.
 
 Deployment on TEST and PROD are included just for illustration purposes. There are different tools and approaches that could help with the application deployment. Some of them are mentioned in [Recommendations section](#recommendations).
 
 ### Pipeline as a Code
 
-Pipeline defined in `Jenkinsfile` implements different stages of the build process depending on the source code branch that triggered the build execution as desribed in [parent section](#ci-pipeline-design).
+Pipeline defined in `Jenkinsfile` implements different stages of the build process depending on the source code branch that triggered the build execution as desribed in [parent section](#cicd-pipeline-design).
 
 #### Benefits of Pipeline
 
