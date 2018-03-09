@@ -19,24 +19,32 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 ### Maven repository `Nexus`
 
-[Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
+#### Configuration
 
-<details><summary>Sample Config - settings.xml</summary><p>
+[Maven Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
+
+[Nexus Repository Mirroring](https://help.sonatype.com/display/NXRM2/Apache+Maven)
+
+<details><summary>Sample Config in settings.xml</summary><p>
 	
 ```xml
 <mirrors>
+	
+<!-- maven central repository -->	
   <mirror>
     <id>nexus</id>
     <mirrorOf>central</mirrorOf>
     <url>${MVNREPO_URL}/repository/${MVNREPO_CENTRAL}</url>
   </mirror>
 
+<!-- MuleSoft public repository -->	
   <mirror>
     <id>mule-extra-repos</id>
     <mirrorOf>mule-public</mirrorOf>
     <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_PUBLIC}</url>
   </mirror>
 
+<!-- MuleSoft enterprise repository - credentials are required (provided by MuleSoft support team) -->
   <mirror>
     <id>Mule</id>
     <mirrorOf>MuleRepository</mirrorOf>
@@ -46,6 +54,46 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 ```
 
 </p></details>
+
+#### Deploy package to Nexus
+
+<details><summary>Sample Config in pom.xml</summary><p>
+	
+```xml
+<distributionManagement>
+	<repository>
+		<id>nexus</id>
+		<name>Releases</name>
+		<url>${maven.repo.url}/repository/${maven.repo.releases}</url>
+	</repository>
+	<snapshotRepository>
+		<id>nexus</id>
+		<name>Snapshot</name>
+		<url>${maven.repo.url}/repository/${maven.repo.snapshots}</url>
+	</snapshotRepository>
+</distributionManagement>
+```
+
+</p></details>
+<p></p>
+
+`${maven.repo.url}`, `${maven.repo.releases}`, and `${maven.repo.snapshots}` are configured in pom as maven properties:
+
+<details><summary>Sample - properties</summary><p>
+	
+```xml
+<properties>
+	<!-- internal maven repository prop -->
+	<maven.repo.url>http://172.17.0.2:8081</maven.repo.url>
+	<maven.repo.snapshots>maven-snapshots</maven.repo.snapshots>
+	<maven.repo.releases>maven-releases</maven.repo.releases>
+</properties>
+```
+
+</p></details>
+<p></p>
+
+Once the configuratino is done you can test your Nexus deployment by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
 
 ### Deployment on DEV environment
 
@@ -80,6 +128,12 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 </p></details>
 
 ### MUnit
+
+Chapter describes recommended best practices for automated unit testing. 
+
+* Test coverage must be at least 80%.
+* Build should be configured to fail if percetage of test coverage is not sufficient.
+* Report generated as a result of the unit test should be archived on CI Server for future reference.
 
 <details><summary>Sample Config</summary><p>
 	
@@ -141,6 +195,8 @@ Feature branch and PROD branch do not create any packages, neither do deployment
 ![CD pipeline design](./images/cd-pipeline-design.png)
 
 Deployment on DEV is the only deployment considered and implemented in this example. Deployment on development environment should be triggered every time there is a commit to development brach (as per the configuration in `Jenkinsfile`, every branch starting with 'dev-' is considered as development branch). [Mule maven plugin](https://docs.mulesoft.com/mule-user-guide/v/3.9/mule-maven-plugin) is used for deployement to development environment.
+
+Special technical user should be created with specific permission to deploy applications. Production should have the separate deployment user, so user used for deployment to other environments can't be abused for PROD deployment.
 
 Deployment on TEST and PROD are included just for illustration purposes. There are different tools and approaches that could help with the application deployment. Some of them are mentioned in [Recommendations section](#recommendations).
 
