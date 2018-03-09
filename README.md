@@ -6,16 +6,14 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 **Key topics are:**
 
-* Maven
-  * (Internal) Maven Repository Configuration: `Nexus` has been used for the purposes of this document
-  * Configuration on the global level: `settings.xml`
-  * Configuration on the project level: `pom.xml`
-    * [Mule maven plugin](https://docs.mulesoft.com/mule-user-guide/v/3.9/mule-maven-plugin): deployment on DEV environment
-    * [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/)
-    * [Maven scm plugin](https://maven.apache.org/scm/maven-scm-plugin/)
-    * [MUnit](https://docs.mulesoft.com/munit/v/1.3/)
+* Maven configuration
+	* (Internal) Maven Repository Configuration: `Nexus` has been used for the purposes of this document
+	* [Maven scm plugin](https://maven.apache.org/scm/maven-scm-plugin/)
+* [MUnit](https://docs.mulesoft.com/munit/v/1.3/)
 * Source code branching
-* CI Pipeline design: `Jenkins` has been used to demostrate implementation of the proposed design
+* CI pipeline - design and build: `Jenkins` has been used to demostrate implementation of the proposed design
+* Prepare a release
+	* [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/)
 
 ## Maven configuration
 
@@ -23,7 +21,7 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 [Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
 
-<details><summary><b>Sample Config - settings.xml</b></summary><p>
+<details><summary>Sample Config - settings.xml</summary><p>
 	
 ```xml
 <mirrors>
@@ -51,7 +49,7 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 ### Deployment on DEV environment
 
-<details><summary><b>Sample Config - on-prem runtime</b></summary><p>
+<details><summary>Sample Config - on-prem runtime</summary><p>
 	
 ```xml
 <plugin>
@@ -83,7 +81,7 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 ### MUnit
 
-<details><summary><b>Sample Config</b></summary><p>
+<details><summary>Sample Config</summary><p>
 	
 ```xml
 <plugin>
@@ -118,14 +116,33 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 ## Source code branching
 
+The diagram below captures the suggested branching strategy, which also impacts the design of CI pipelines.
+
 ![Branching strategy](./images/scm-branching.png)
 
-## CI Pipeline design
+* **Feature branch**: feature development - branch usually maintained by one developer working on the specific feature.
+* **Main development branch**: all the finalised features are merged to development branch. The new releases or release candidates are created from this branch.
+* **Prod branch**: Once the release is deployed to production, code from development branch is merged to Master that represents production code.
+* **Hotfix branch**: Created from Mater / PROD branch if critical issue is identified in production and requires immediate fix.
+
+## CI/CD Pipeline design
+
+The main focus of this document is to provide detailed view on CI pipeline definition. CD pipelines are mentioned mostly to maintain completed DevOps picture.
+
+**Continuous Integration**
 
 ![CI pipeline design](./images/ci-pipeline-design.png)
+
+As displayed on the diagram above, package creation and deployment (to Nexus and DEV environment) is triggered only for development branch (name starts with 'dev-').
+Feature branch and PROD branch do not create any packages, neither do deployment. The only purpose of these pipelines is to run the MUnit tests to ensure code quality.
+
+**Continuous Deployment**
+
 ![CD pipeline design](./images/cd-pipeline-design.png)
 
-Deployment on TEST and Deployment on PROD is included just for illustration purposes. There are different tools and approaches that could help with application deployment. Some of them are mentioned in [Recommendations section](#recommendations).
+Deployment on DEV is the only deployment considered and implemented in this example. Deployment on development environment should be triggered every time there is a commit to development brach (as per the configuration in `Jenkinsfile`, every branch starting with 'dev-' is considered as development branch). [Mule maven plugin](https://docs.mulesoft.com/mule-user-guide/v/3.9/mule-maven-plugin) is used for deployement to development environment.
+
+Deployment on TEST and PROD are included just for illustration purposes. There are different tools and approaches that could help with the application deployment. Some of them are mentioned in [Recommendations section](#recommendations).
 
 ### Pipeline as a Code
 
