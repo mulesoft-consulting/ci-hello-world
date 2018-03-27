@@ -15,47 +15,50 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 * Prepare a release
 	* [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/)
 
-## Maven configuration
+## Maven repository `Nexus`
+Why is it important:
+* security
+* manages all the dependencies (external libraries as well as internally built libraries like)
+* manages and stores built packages - snapshots and releases
 
-### Maven repository `Nexus`
-
-#### Configuration
+#### Repository mirroring
 
 [Maven Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
 
 [Nexus Repository Mirroring](https://help.sonatype.com/display/NXRM2/Apache+Maven)
 
-<details><summary>Sample Config in settings.xml</summary><p>
+<details><summary>Sample Config in `settings.xml`</summary><p>
 	
 ```xml
 <mirrors>
-	
 <!-- maven central repository -->	
-  <mirror>
-    <id>nexus</id>
-    <mirrorOf>central</mirrorOf>
-    <url>${MVNREPO_URL}/repository/${MVNREPO_CENTRAL}</url>
-  </mirror>
+    <mirror>
+      <id>mvn_repo_central_mirror</id>
+      <mirrorOf>central</mirrorOf>
+      <url>${MVNREPO_URL}/repository/${MVNREPO_CENTRAL}</url>
+    </mirror>
 
-<!-- MuleSoft public repository -->	
-  <mirror>
-    <id>mule-extra-repos</id>
-    <mirrorOf>mule-public</mirrorOf>
-    <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_PUBLIC}</url>
-  </mirror>
-
-<!-- MuleSoft enterprise repository - credentials are required (provided by MuleSoft support team) -->
-  <mirror>
-    <id>Mule</id>
-    <mirrorOf>MuleRepository</mirrorOf>
-    <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_EE}</url>
-  </mirror>
-</mirrors>
+<!-- MuleSoft public repository -->
+    <mirror>
+      <id>mule_repo_public_mirror</id>
+      <mirrorOf>mule-public</mirrorOf>
+      <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_PUBLIC}</url>
+    </mirror>
+ 
+<!-- MuleSoft enterprise repository - credentials are required (provided by MuleSoft support team) -->	
+    <mirror>
+      <id>mule_repo_ee_mirror</id>
+      <mirrorOf>mule-ee</mirrorOf>
+      <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_EE}</url>
+    </mirror>
+  </mirrors>
+<mirrors>
 ```
 
 </p></details>
 
 #### Deploy package to Nexus
+Section provides the details on configuration that is required to enable deployment of a package to Mave repository (e.g. `Nexus`).
 
 <details><summary>Sample Config in pom.xml</summary><p>
 	
@@ -64,12 +67,12 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 	<repository>
 		<id>nexus</id>
 		<name>Releases</name>
-		<url>${maven.repo.url}/repository/${maven.repo.releases}</url>
+		<url>${MVNREPO_URL}/repository/${maven.repo.releases}</url>
 	</repository>
 	<snapshotRepository>
 		<id>nexus</id>
 		<name>Snapshot</name>
-		<url>${maven.repo.url}/repository/${maven.repo.snapshots}</url>
+		<url>${MVNREPO_URL}/repository/${maven.repo.snapshots}</url>
 	</snapshotRepository>
 </distributionManagement>
 ```
@@ -77,14 +80,14 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 </p></details>
 <p></p>
 
-`${maven.repo.url}`, `${maven.repo.releases}`, and `${maven.repo.snapshots}` are configured in pom as maven properties:
+`${MVNREPO_URL}` is configured as Jenkins variable, see [Jenkins configuration](#jenkins-configuration) for more details.
+
+`${maven.repo.releases}`, and `${maven.repo.snapshots}` are configured in pom as maven properties:
 
 <details><summary>Sample - properties</summary><p>
 	
 ```xml
 <properties>
-	<!-- internal maven repository prop -->
-	<maven.repo.url>http://172.17.0.2:8081</maven.repo.url>
 	<maven.repo.snapshots>maven-snapshots</maven.repo.snapshots>
 	<maven.repo.releases>maven-releases</maven.repo.releases>
 </properties>
@@ -93,7 +96,7 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 </p></details>
 <p></p>
 
-Once the configuratino is done you can test your Nexus deployment by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
+Once the configuration is done you can test your deployment to mavne repository (e.g. Nexus) by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
 
 ## MUnit
 
@@ -173,7 +176,7 @@ Deployment on DEV is the only deployment considered and implemented in this exam
   <version>2.2.1</version>
   <configuration>
     <deploymentType>arm</deploymentType>
-    <username>${MULEANYPOINT_USR}</username>
+    <username>${MULEANYPOINT_USER}</username>
     <password>${MULEANYPOINT_PASSWORD}</password>
     <target>summer</target>
     <!-- One of: server, serverGroup, cluster -->
@@ -195,6 +198,8 @@ Deployment on DEV is the only deployment considered and implemented in this exam
 </p></details>
 <p></p>
 
+`${MULEANYPOINT_USER}` and `${MULEANYPOINT_PASSWORD}` are configured as Jenkins environment variables, see [Jenkins configuration](#jenkins-configuration) for more details. 
+
 Special technical user should be created with specific permission to deploy applications. Production should have the separate deployment user, so user used for deployment to other environments can't be abused for PROD deployment.
 
 Deployment on TEST and PROD are included just for illustration purposes. There are different tools and approaches that could help with the application deployment. Some of them are mentioned in [Recommendations section](#recommendations).
@@ -215,6 +220,26 @@ Pipeline defined in `Jenkinsfile` implements different stages of the build proce
   * MULEANYPOINT_USR
   * MULEANYPOINT_PASSWORD
 * `settings.xml` for Jenkins
+
+## Release management
+Releases are prepared by [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/).
+
+<details><summary>Sample Config</summary><p>
+	
+```xml
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-release-plugin</artifactId>
+	<version>2.5.3</version>
+	<configuration>
+		<checkModificationExcludes>
+			<checkModificationExclude>pom.xml</checkModificationExclude>
+		</checkModificationExcludes>
+	</configuration>
+</plugin>
+```
+
+</p></details>
 
 ## How to use `cicd_build_hello_world`
 This project implements all patterns discussed above. It gives us the ability to quickly test and prove design decisions and configuration.
