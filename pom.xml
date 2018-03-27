@@ -17,12 +17,12 @@
 		<repository>
 			<id>nexus</id>
 			<name>Releases</name>
-			<url>${maven.repo.url}/repository/${maven.repo.releases}</url>
+			<url>${MVNREPO_URL}/repository/${maven.repo.releases}</url>
 		</repository>
 		<snapshotRepository>
 			<id>nexus</id>
 			<name>Snapshot</name>
-			<url>${maven.repo.url}/repository/${maven.repo.snapshots}</url>
+			<url>${MVNREPO_URL}/repository/${maven.repo.snapshots}</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -36,10 +36,7 @@
 		<app.build.version>v1</app.build.version>
 		<munit.version>1.3.7</munit.version>
 		<mule.munit.support.version>3.9.1</mule.munit.support.version>
-
-		<!-- internal maven repository prop -->
-		<maven.repo.url>http://172.17.0.2:8081</maven.repo.url>
-		<!--<maven.repo.url>http://localhost:8888</maven.repo.url>-->
+		
 		<maven.repo.snapshots>maven-snapshots</maven.repo.snapshots>
 		<maven.repo.releases>maven-releases</maven.repo.releases>
 	</properties>
@@ -60,11 +57,11 @@
 			    <version>2.2.1</version>
 			    <configuration>
 			        <deploymentType>arm</deploymentType>
-			        <username>igor_repka_v2</username>
+			        <username>${MULEANYPOINT_USER}</username>
 			        <password>${MULEANYPOINT_PASSWORD}</password>
-			        <target>summer</target>
+			        <target>ContainerizedCluster</target>
 			        <!-- One of: server, serverGroup, cluster -->
-			        <targetType>server</targetType>
+			        <targetType>cluster</targetType>
 			        <environment>TEST</environment>
 			    </configuration>
 			    <executions>

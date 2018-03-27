@@ -14,20 +14,20 @@
   
   <mirrors>
     <mirror>
-      <id>nexus</id>
+      <id>mvn_repo_central_mirror</id>
       <mirrorOf>central</mirrorOf>
       <url>${MVNREPO_URL}/repository/${MVNREPO_CENTRAL}</url>
     </mirror>
     
-   	<mirror>
-      <id>mule-extra-repos</id>
+    <mirror>
+      <id>mule_repo_public_mirror</id>
       <mirrorOf>mule-public</mirrorOf>
       <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_PUBLIC}</url>
     </mirror>
     
     <mirror>
-      <id>Mule</id>
-      <mirrorOf>MuleRepository</mirrorOf>
+      <id>mule_repo_ee_mirror</id>
+      <mirrorOf>mule-ee</mirrorOf>
       <url>${MVNREPO_URL}/repository/${MVNREPO_MULE_EE}</url>
     </mirror>
   </mirrors>
@@ -63,7 +63,7 @@
   <profiles>
 
     <profile>
-      <id>mule-extra-repos</id>
+      <id>mule_repo_public</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -82,14 +82,13 @@
     </profile>
 
     <profile>
-      <id>Mule</id>
+      <id>mule_repo_ee</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
       <repositories>
         <repository>
-          <id>MuleRepository</id>
-          <name>MuleRepository</name>
+          <id>mule-ee</id>
           <url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/</url>
           <layout>default</layout>
           <releases>
@@ -103,7 +102,7 @@
     </profile>
 
     <profile>
-      <id>nexus</id>
+      <id>mvn_repo_central</id>
       <repositories>
         <repository>
           <id>central</id>
@@ -125,7 +124,7 @@
   </profiles>
 
   <activeProfiles>
-    <activeProfile>nexus</activeProfile>
+    <activeProfile>mvn_repo_central</activeProfile>
   </activeProfiles>
 
 </settings>
