@@ -7,8 +7,8 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
     <spring:beans>
         <spring:import resource="classpath:hello-world.xml"/>
     </spring:beans>
-    <munit:test name="hello-world-test-suite-hello-worldFlowTest" description="Test">
-        <flow-ref name="hello-worldFlow" doc:name="Flow-ref to hello-worldFlow"/>
+    <munit:test name="hello-world-sub-test-suite-hello-worldSub_FlowTest" description="Test">
+        <flow-ref name="hello-worldSub_Flow" doc:name="Flow-ref to hello-worldSub_Flow"/>
         <munit:assert-payload-equals message="Payload is not valid" expectedValue="{&quot;status&quot;: &quot;Well done! Application is deployed and running!&quot;}" doc:name="Assert Payload"/>
     </munit:test>
 </mule>

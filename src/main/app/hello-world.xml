@@ -24,7 +24,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
     
     <flow name="hello-worldFlow">
         <http:listener config-ref="HTTP_Listener_Configuration" path="/test" allowedMethods="GET" doc:name="HTTP"/>
-        <logger message="&quot;API Called!&quot;" level="INFO" doc:name="Logger"/>
-        <set-payload value="{&quot;status&quot;: &quot;Well done! Application is deployed and running!&quot;}" doc:name="Set Payload" />
+        <flow-ref name="hello-worldSub_Flow" doc:name="Hello World sub-flow"/>
     </flow>
+    <sub-flow name="hello-worldSub_Flow">
+        <logger message="&quot;API Called!&quot;" level="INFO" doc:name="Logger"/>
+        <set-payload value="{&quot;status&quot;: &quot;Well done! Application is deployed and running!&quot;}" doc:name="Set Payload"/>
+    </sub-flow>
 </mule>

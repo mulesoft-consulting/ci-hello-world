@@ -158,6 +158,9 @@
 							<format>html</format>
 							<format>json</format>
 						</formats>
+						<ignoreFlows>
+							<ignoreFlow>hello-worldFlow</ignoreFlow>       
+					  	</ignoreFlows>
 					</coverage>
 				</configuration>
 			</plugin>

@@ -2,6 +2,7 @@
 # Maven Files #
 #-------------#
 target
+reports
 
 #---------------------------#
 # Anypoint Studio / Eclipse #
