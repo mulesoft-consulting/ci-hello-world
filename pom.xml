@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mule.deploy.test</groupId>
 	<artifactId>hello-world</artifactId>
-	<version>1.0.6-SNAPSHOT</version>
+	<version>1.0.6</version>
 	<packaging>mule</packaging>
 	<name>Mule hello-world Application</name>
 
 	<scm>
 		<developerConnection>scm:git:https://${SCM_USER}@github.com/mulesoft-consulting/cicd_build_hello_world.git</developerConnection>
-	  <tag>HEAD</tag>
+	  <tag>hello-world-1.0.6</tag>
   </scm>
 
 	<distributionManagement>
