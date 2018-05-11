@@ -198,7 +198,7 @@ Deployment on DEV is the only deployment considered and implemented in this exam
 </p></details>
 <p></p>
 
-`${MULEANYPOINT_USER}` and `${MULEANYPOINT_PASSWORD}` are configured as Jenkins environment variables, see [Jenkins configuration](#jenkins-configuration) for more details. 
+`${MULEANYPOINT_USER}` and `${MULEANYPOINT_PASSWORD}` are configured as Jenkins Credentials, see [Jenkins configuration](#jenkins-configuration) for more details. 
 
 Special technical user should be created with specific permission to deploy applications. Production should have the separate deployment user, so user used for deployment to other environments can't be abused for PROD deployment.
 
@@ -216,27 +216,65 @@ Pipeline defined in `Jenkinsfile` implements different stages of the build proce
 - Versatile: Pipelines support complex real-world continuous delivery requirements, including the ability to fork/join, loop, and perform work in parallel.
 
 ### Jenkins configuration
-* Environment variables
+* Credentials
   * MULEANYPOINT_USR
   * MULEANYPOINT_PASSWORD
+  * SCM_USER
+  * SCM_PASSWORD
 * `settings.xml` for Jenkins
 
 ## Release management
-Releases are prepared by [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/).
+Releases are prepared by [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/) against the **dev-main** branch.
 
-<details><summary>Sample Config</summary><p>
+<details><summary>Sample Config - pom.xml</summary><p>
 	
 ```xml
-<plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-release-plugin</artifactId>
-	<version>2.5.3</version>
-	<configuration>
-		<checkModificationExcludes>
-			<checkModificationExclude>pom.xml</checkModificationExclude>
-		</checkModificationExcludes>
-	</configuration>
-</plugin>
+<scm>
+	<developerConnection>scm:git:https://${SCM_USER}@github.com/mulesoft-consulting/cicd_build_hello_world.git</developerConnection>
+	<tag>HEAD</tag>
+</scm>
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-release-plugin</artifactId>
+			<version>2.5.3</version>
+			<configuration>
+				<checkModificationExcludes>
+					<checkModificationExclude>pom.xml</checkModificationExclude>
+				</checkModificationExcludes>
+			</configuration>
+		</plugin>
+	
+		<plugin>
+			<artifactId>maven-scm-plugin</artifactId>
+			<version>1.9.5</version>
+			<configuration>
+				<tag>${project.artifactId}-${project.version}</tag>
+				<username>${SCM_USER}</username>
+				<password>${SCM_PASSWORD}</password>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
+```
+
+</p></details>
+
+The plugin **maven-scm-plugin** is required to ensure that -SNAPSHOT is removed from release version and proper tag is created and committed to repository.
+
+`${SCM_USER}` and `${SCM_PASSWORD}` are configured as Jenkins Credentials, see [Jenkins configuration](#jenkins-configuration) for more details. 
+
+To enable maven release plugin to commit changes to repository following configuration must be included in maven's `settings.xml` file.
+
+<details><summary>Sample Config - settings.xml</summary><p>
+	
+```xml
+<server>
+	<id>github.com</id>
+	<username>${SCM_USER}</username>
+	<password>${SCM_PASSWORD}</password>
+</server>
 ```
 
 </p></details>
