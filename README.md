@@ -260,12 +260,14 @@ Releases are prepared by [Maven release plugin](http://maven.apache.org/maven-re
 ```
 
 </p></details>
+<p></p>
 
 The plugin **maven-scm-plugin** is required to ensure that -SNAPSHOT is removed from release version and proper tag is created and committed to repository.
 
 `${SCM_USER}` and `${SCM_PASSWORD}` are configured as Jenkins Credentials, see [Jenkins configuration](#jenkins-configuration) for more details. 
 
 To enable maven release plugin to commit changes to repository following configuration must be included in maven's `settings.xml` file.
+
 
 <details><summary>Sample Config - settings.xml</summary><p>
 	
@@ -279,7 +281,7 @@ To enable maven release plugin to commit changes to repository following configu
 
 </p></details>
 
-## How to use `cicd_build_hello_world`
+## How to use `cicd-hello-world`
 This project implements all patterns discussed above. It gives us the ability to quickly test and prove design decisions and configuration.
 
 ## Recommendations
