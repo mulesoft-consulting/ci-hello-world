@@ -22,10 +22,11 @@ Why is it important:
 * manages and stores built packages - snapshots and releases
 
 #### Repository mirroring
+Mirroring enables organisation to use their own central repository to access all the required dependencies available outside their network. Developers can get access to any dependency they might need via the single point, which is local instance of maven repository (e.g. Nexus)
 
-[Maven Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
-
-[Nexus Repository Mirroring](https://help.sonatype.com/display/NXRM2/Apache+Maven)
+More details can be found in official documentation:
+* Maven official documentation: [Maven Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
+* Nexus official documentation: [Nexus Repository Mirroring](https://help.sonatype.com/display/NXRM2/Apache+Maven)
 
 <details><summary>Sample Config in `settings.xml`</summary><p>
 	
@@ -58,7 +59,7 @@ Why is it important:
 </p></details>
 
 #### Deploy package to Nexus
-Section provides the details on configuration that is required to enable deployment of a package to Mave repository (e.g. `Nexus`).
+Section provides the details of configuration that is required to enable deployment of a package to Mave repository (e.g. `Nexus`).
 
 <details><summary>Sample Config in pom.xml</summary><p>
 	
@@ -145,10 +146,35 @@ The diagram below captures the suggested branching strategy, which also impacts 
 
 ![Branching strategy](./images/scm-branching.png)
 
-* **Feature branch**: feature development - branch usually maintained by one developer working on the specific feature.
-* **Main development branch**: all the finalised features are merged to development branch. The new releases or release candidates are created from this branch.
-* **Prod branch**: Once the release is deployed to production, code from development branch is merged to Master that represents production code.
-* **Hotfix branch**: Created from Mater / PROD branch if critical issue is identified in production and requires immediate fix.
+**Feature Branch**
+Feature development - branch usually maintained by one developer working on the specific feature.
+Naming conventions of the branch: feature-`name` where name is user story identifier (Jira ticket ID)
+
+**Main development branch**
+All the finalised features are merged into the development branch. The new releases or release candidates are created and built from this branch.
+
+A developer can never merge feature branch to main development branch directly. The [Pull Request](https://www.atlassian.com/git/tutorials/making-a-pull-request) must be used. The tech lead validates the Pull Request and approves or rejects the merge commit. The practice enforces the code review practices, team collaboration, and improves the stability of the releases.
+
+**Prod branch**
+Once the release is deployed to production, code from development branch is merged into Master that represents production code.
+
+Merging development branch into PROD branch should be ideally semi-automatic activity managed via CICD.
+
+**Hotfix branch**
+Created from Mater/PROD branch if a critical issue is identified in production and an immediate fix is required.
+
+Naming conventions of the branch: hotfix-`identifier` where identifier is ID of reported incident (e.g. Jira ticket ID - if Jira is used for incident tracking)
+
+Once the hotfix is deployed to production the branch must be merged into Master/PROD branch and Main development branch
+
+**Note about Release branch**
+Even though the branching strategy is inspired by [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), it does not consider having a separate release branch as a must-have requirement. 
+
+The reason for not introducing the release branch is unnecessary branch management, which can easily become too complex and difficult to maintain. In many scenarios, developers struggle or forget to merge branches properly and the code is either lost or damaged, which leads to missing feature in PROD or deploying the old defects fixed in the previous release but not merged into the main development branch.
+
+The release can be built from the development branch and the commit, the package is created from, must be [tagged](https://git-scm.com/book/en/v2/Git-Basics-Tagging) in the repository in development branch so it is clear what code was used for what release candidate.
+
+The release branch can be created in special cases, however, it should be avoidable in a truly agile environment with efficient CICD. Example of such a scenario: Release Candidate has been built and deployed and the critical defect that requires fix is identified during UAT and there is no possibility to implement hotfix on top of the main development branch because new features that are not part of the current release have been already merged into the main development branch. 
 
 ## CICD Pipeline design
 
@@ -216,12 +242,21 @@ Pipeline defined in `Jenkinsfile` implements different stages of the build proce
 - Versatile: Pipelines support complex real-world continuous delivery requirements, including the ability to fork/join, loop, and perform work in parallel.
 
 ### Jenkins configuration
-* Credentials
-  * MULEANYPOINT_USR
-  * MULEANYPOINT_PASSWORD
-  * SCM_USER
-  * SCM_PASSWORD
-* `settings.xml` for Jenkins
+* Environment properties (configured in `Jenkinsfile`)
+  * MVNREPO_USER =          credentials('nexus_user')
+  * MVNREPO_PASSWORD =      credentials('nexus_psswd')
+  * MULEREPO_USER =         credentials('mulerepo_usr')
+  * MULEREPO_PASSWORD =     credentials('mulerepo_psswd')
+  * MULEANYPOINT_USER =     credentials('anypoint_username')
+  * MULEANYPOINT_PASSWORD = credentials('anypoint_password')
+  * SCM_USER =              credentials('scm_user')
+  * SCM_PASSWORD =          credentials('scm_psswd')
+  * MVNREPO_URL =           credentials('mvn_repo_url') //e.g. http://172.17.0.7:8081
+  * MVNREPO_CENTRAL =       'maven-central/'
+  * MVNREPO_MULE_EE =       'maven-mule-ee/'
+  * MVNREPO_MULE_PUBLIC =   'maven-mule-public/'
+
+* `settings.xml` for Jenkins - see `mvn-settings.xml`
 
 ## Release management
 Releases are prepared by [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/) against the **dev-main** branch.
