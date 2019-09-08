@@ -11,6 +11,10 @@ reports
 .classpath
 .project
 .settings
+.metadata
+.mule
+.tooling
+.tooling-apps-cache
 mule-project.xml
 .mule
 catalog
