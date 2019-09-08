@@ -103,7 +103,7 @@ Once the configuration is done you can test your deployment to mavne repository 
 
 Chapter describes recommended best practices for automated unit testing. 
 
-* Test coverage must be at least 80%.
+* Test coverage must be at least 80% (that includes application coverage and individual flow coverage).
 * Build should be configured to fail if percetage of test coverage is not sufficient.
 * Report generated as a result of the unit test should be archived on CI Server for future reference.
 
