@@ -1,0 +1,31 @@
+{
+	"configs": [
+		"implementation.xml",
+		"global.xml",
+		"api.xml",
+		"error-handling.xml"
+	],
+	"redeploymentEnabled": true,
+	"name": "mule4-api-template",
+	"classLoaderModelLoaderDescriptor": {
+		"attributes": {
+			"exportedPackages": [
+				"com.mule.api"
+			],
+			"exportedResources": [
+				"api/api.raml",
+				"dataweaves/build-error-response.dwl"
+			]
+		},
+		"id": "mule"
+	},
+	"requiredProduct": "MULE_EE",
+	"minMuleVersion": "4.1.3",
+	"bundleDescriptorLoader": {
+		"attributes": {
+			
+		},
+		"id": "mule"
+	},
+	"secureProperties": []
+}
