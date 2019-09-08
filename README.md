@@ -4,16 +4,13 @@
 
 Project demonstrates DevOps best prectices, tooling and configuration and is mostly focused on CI.
 
-**Key topics are:**
+**Key areas:**
 
-* Maven configuration
-	* (Internal) Maven Repository Configuration: `Nexus` has been used for the purposes of this document
-	* [Maven scm plugin](https://maven.apache.org/scm/maven-scm-plugin/)
-* [MUnit](https://docs.mulesoft.com/munit/v/1.3/)
-* Source code branching
-* CI pipeline - design and build: `Jenkins` has been used to demostrate implementation of the proposed design
-* Prepare a release
-	* [Maven release plugin](http://maven.apache.org/maven-release/maven-release-plugin/)
+* Maven Repository (Nexus)
+* MUnit
+* Branching Strategy
+* CICD Pipelines - design
+* Release Management
 
 ## Maven repository `Nexus`
 Why is it important:
