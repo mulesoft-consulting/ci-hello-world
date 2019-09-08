@@ -147,20 +147,24 @@ The diagram below captures the suggested branching strategy, which also impacts 
 ![Branching strategy](./images/scm-branching.png)
 
 **Feature Branch**
+
 Feature development - branch usually maintained by one developer working on the specific feature.
 Naming conventions of the branch: feature-`name` where name is user story identifier (Jira ticket ID)
 
 **Main development branch**
+
 All the finalised features are merged into the development branch. The new releases or release candidates are created and built from this branch.
 
 A developer can never merge feature branch to main development branch directly. The [Pull Request](https://www.atlassian.com/git/tutorials/making-a-pull-request) must be used. The tech lead validates the Pull Request and approves or rejects the merge commit. The practice enforces the code review practices, team collaboration, and improves the stability of the releases.
 
 **Prod branch**
+
 Once the release is deployed to production, code from development branch is merged into Master that represents production code.
 
 Merging development branch into PROD branch should be ideally semi-automatic activity managed via CICD.
 
 **Hotfix branch**
+
 Created from Mater/PROD branch if a critical issue is identified in production and an immediate fix is required.
 
 Naming conventions of the branch: hotfix-`identifier` where identifier is ID of reported incident (e.g. Jira ticket ID - if Jira is used for incident tracking)
@@ -168,6 +172,7 @@ Naming conventions of the branch: hotfix-`identifier` where identifier is ID of 
 Once the hotfix is deployed to production the branch must be merged into Master/PROD branch and Main development branch
 
 **Note about Release branch**
+
 Even though the branching strategy is inspired by [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow), it does not consider having a separate release branch as a must-have requirement. 
 
 The reason for not introducing the release branch is unnecessary branch management, which can easily become too complex and difficult to maintain. In many scenarios, developers struggle or forget to merge branches properly and the code is either lost or damaged, which leads to missing feature in PROD or deploying the old defects fixed in the previous release but not merged into the main development branch.
