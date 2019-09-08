@@ -1,0 +1,12 @@
+custom-error-code-prefix: "ORG_MULE"
+application:
+ name: "${project.artifactId}"
+api:
+ name: "${project.artifactId}"
+ instanceId: "configure-it-from-ARM"
+ version: "${api.build.version}"
+ http:
+  listener:
+   path: "/api/${api.name}/${api.version}/*"
+   host: "0.0.0.0"
+   port: "8081"

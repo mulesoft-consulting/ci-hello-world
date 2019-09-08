@@ -1,0 +1,27 @@
+#%RAML 1.0
+title: Customer View API
+description: This API is used to demostrate different platform capabilities.
+version: v1
+
+
+mediaType: application/json
+
+/customers/{customerId}:
+    displayName: Customer
+    get:
+      displayName: Load a Customer
+      description: Return customer for provided customer ID
+      responses: 
+        200:
+          body: 
+            type: object
+            properties:
+              firstname: string
+              surname: string
+              title: string
+            example: |
+              {
+                "firstname": "John",
+                "surname": "Snow",
+                "title": "Mr."
+              }

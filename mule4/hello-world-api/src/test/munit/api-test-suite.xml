@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="api-test-suite.xml" />
+	<munit:test name="api-test-suite-get:\customers\(customerId):api-configTest" description="Test" doc:id="e7f6d684-b635-4fd7-a82e-0672e0987bbe" >
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\customers\(customerId):api-config" doc:id="f571673a-3c52-4b69-bc43-f0c45340a733" name="get:\customers\(customerId):api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="f2e19450-8e59-4c90-a2a8-fc2273f6609d" expression="#[write(payload, 'application/json') replace /[\s]/ with '']" is="#[MunitTools::equalTo(MunitTools::getResourceAsString(&quot;samples/customer.json&quot;) replace /[\s]/ with '')]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>

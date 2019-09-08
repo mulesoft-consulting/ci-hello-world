@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="0656042c-f751-474a-90fb-aaec39c07141" file="default-properties.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8288702f-f4fe-40bb-ac7f-4ab7365378d0" >
+		<http:listener-connection port="${api.http.listener.port}" host="${api.http.listener.host}"/>
+	</http:listener-config>
+	<apikit:config outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:name="api-config" doc:id="e781ef6a-4a3f-40a9-bc54-9350eb296e34" name="api-config" raml="api.raml" queryParamsStrictValidation="true">
+		<apikit:flow-mappings >
+			<apikit:flow-mapping resource="/customers/{customerId}" action="get" flow-ref="get:\customers\(customerId):api-config" />
+		</apikit:flow-mappings>
+	</apikit:config>
+</mule>

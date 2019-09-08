@@ -1,0 +1,113 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(name: 'IS_RELEASE',
+            defaultValue: false,
+            description: 'Enable if you would like to build Release Candidate.'
+        )
+    }
+
+    environment {
+        MVNREPO_USER =          credentials('nexus_user')
+        MVNREPO_PASSWORD =      credentials('nexus_psswd')
+        MULEREPO_USER =         credentials('mulerepo_usr')
+        MULEREPO_PASSWORD =     credentials('mulerepo_psswd')
+        MULEANYPOINT_USER =     credentials('anypoint_username')
+        MULEANYPOINT_PASSWORD = credentials('anypoint_password')
+        SCM_USER =              credentials('scm_user')
+        SCM_PASSWORD =          credentials('scm_psswd')
+        MVNREPO_URL =           credentials('mvn_repo_url') //e.g. http://172.17.0.7:8081
+        MVNREPO_CENTRAL =       'maven-central/'
+        MVNREPO_MULE_EE =       'maven-mule-ee/'
+        MVNREPO_MULE_PUBLIC =   'maven-mule-public/'
+    } 
+    
+    triggers {
+        pollSCM('* * * * *')
+    }
+
+    tools {
+        maven 'maven' 
+    }
+
+    stages {
+    
+        stage('FEATURE Unite test') {
+            when {
+                allOf {
+                    branch 'feature-*' 
+                }
+            } 
+            steps { 
+                sh 'mvn -s mvn-settings.xml clean test' 
+            }
+        }
+        
+        stage('DEV Deployment') {
+            when {
+                expression {
+                    return params.IS_RELEASE == false
+                }
+                branch 'dev-*'
+            } 
+            steps {
+                script {
+                    def lastCommit = sh returnStdout: true, script: 'git log -1 --pretty=%B'
+                    if (lastCommit.contains("[maven-release-plugin]")){
+                        sh "echo  Deployment skipped because it has been managed by release plugin"
+                    } else {
+                        sh "echo  Deploying package to maven repository"
+                        sh 'mvn -s mvn-settings.xml clean deploy'
+                        sh "echo  Deploying application to Mule" 
+                        sh 'mvn -s mvn-settings.xml package deploy -DmuleDeploy -DskipMunitTests'
+                    }
+                }
+            }
+        }
+        
+        stage('Prepare Release') {
+            when {
+                expression {
+                    return params.IS_RELEASE
+                }
+                branch 'dev-*'
+            } 
+            steps {
+                script {
+                    def lastCommit = sh returnStdout: true, script: 'git log -1 --pretty=%B'
+                    if (lastCommit.contains("[maven-release-plugin]")){
+                        sh "echo  Commit done by Maven Release Plugin - build is being skipped"
+
+                    } else {
+                    //checkout needs to be done, because Jenkins uses shallow clones, which causes 
+                    //“Git fatal: ref HEAD is not a symbolic ref” exception while using Maven Release Plugin
+                        sh "git checkout ${env.BRANCH_NAME}"
+                        sh 'mvn -s mvn-settings.xml clean release:prepare'
+                        sh 'mvn -s mvn-settings.xml release:perform' 
+                    }
+                } 
+            }
+        }
+        
+        stage('Master Unit test') {
+            when {
+                allOf {
+                    branch 'master' 
+                }
+            } 
+            steps { 
+                sh 'mvn -s mvn-settings.xml clean test' 
+            }
+        }
+        
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'target/site/munit/coverage/**'
+            junit 'target/surefire-reports/**/*.xml', allowEmptyResults: true
+            cleanWs()
+        }
+    }
+}

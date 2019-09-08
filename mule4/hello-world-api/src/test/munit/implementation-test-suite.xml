@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implementation-test-suite.xml" />
+	<munit:test name="implementation-test-suite-get-customer-by-id-subflowTest" description="Test" doc:id="5270f673-5ae0-4940-b65f-95f9b2d1fafa" >
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get-customer-by-id-subflow" doc:id="07373ff3-c2f5-4233-884b-7fe423a997a1" name="get-customer-by-id-subflow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="faf57ca7-6680-40a6-a3fb-8b892fa91093" expression="#[write(payload, 'application/json') replace /[\s]/ with '']" is="#[MunitTools::equalTo(MunitTools::getResourceAsString(&quot;samples/customer.json&quot;) replace /[\s]/ with '')]"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
