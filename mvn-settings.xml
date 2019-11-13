@@ -64,7 +64,7 @@
 	<profiles>
 
 		<profile>
-			<id>mule_repo_public</id>
+			<id>mule_repo</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -74,22 +74,6 @@
 					<url>https://repository.mulesoft.org/nexus/content/repositories/public
 					</url>
 				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>mule-public</id>
-					<url>https://repository.mulesoft.org/nexus/content/repositories/public
-					</url>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-
-		<profile>
-			<id>mule_repo_ee</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<repositories>
 				<repository>
 					<id>mule-ee</id>
 					<url>https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/
@@ -102,12 +86,6 @@
 						<enabled>true</enabled>
 					</snapshots>
 				</repository>
-			</repositories>
-		</profile>
-
-		<profile>
-			<id>mvn_repo_central</id>
-			<repositories>
 				<repository>
 					<id>central</id>
 					<url>http://central</url>
@@ -121,6 +99,11 @@
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
+					<id>mule-public</id>
+					<url>https://repository.mulesoft.org/nexus/content/repositories/public
+					</url>
+				</pluginRepository>
+				<pluginRepository>
 					<id>central</id>
 					<url>http://central/</url>
 					<releases>
@@ -132,11 +115,6 @@
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
-
 	</profiles>
-
-	<activeProfiles>
-		<activeProfile>mvn_repo_central</activeProfile>
-	</activeProfiles>
 
 </settings>
