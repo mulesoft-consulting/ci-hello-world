@@ -14,14 +14,14 @@ Project demonstrates DevOps best prectices, tooling and configuration and is mos
 
 ## Maven repository `Nexus`
 Why is it important:
-* security
-* manages all the dependencies (external libraries as well as internally built libraries like)
-* manages and stores built packages - snapshots and releases
+* Security
+* Manages all the dependencies (external libraries as well as internally built libraries)
+* Manages and stores built packages - snapshots and releases
 
 #### Repository mirroring
-Mirroring enables organisation to use their own central repository to access all the required dependencies available outside their network. Developers can get access to any dependency they might need via the single point, which is local instance of maven repository (e.g. Nexus)
+Mirroring enables organisation to use their own central repository to access all the required dependencies available outside their network. Developers can get access to any dependency they might need via the single point, which is a local instance of maven repository (e.g. Nexus)
 
-More details can be found in official documentation:
+More details can be found in the following official documentation:
 * Maven official documentation: [Maven Repostiory Mirroring](https://maven.apache.org/guides/mini/guide-mirror-settings.html)
 * Nexus official documentation: [Nexus Repository Mirroring](https://help.sonatype.com/display/NXRM2/Apache+Maven)
 
@@ -56,7 +56,8 @@ More details can be found in official documentation:
 </p></details>
 
 #### Deploy package to Nexus
-Section provides the details of configuration that is required to enable deployment of a package to Maven repository (e.g. `Nexus`).
+
+This section provides details of the configuration required to enable deployment of a package to a Maven repository (e.g. `Nexus`).
 
 <details><summary>Sample Config in pom.xml</summary><p>
 	
@@ -78,9 +79,9 @@ Section provides the details of configuration that is required to enable deploym
 </p></details>
 <p></p>
 
-`${MVNREPO_URL}` is configured as Jenkins variable, see [Jenkins configuration](#jenkins-configuration) for more details.
+`${MVNREPO_URL}` is configured as a Jenkins variable, see [Jenkins configuration](#jenkins-configuration) for more details.
 
-`${maven.repo.releases}`, and `${maven.repo.snapshots}` are configured in pom as maven properties:
+`${maven.repo.releases}`, and `${maven.repo.snapshots}` are configured in pom as Maven properties:
 
 <details><summary>Sample - properties</summary><p>
 	
@@ -94,15 +95,15 @@ Section provides the details of configuration that is required to enable deploym
 </p></details>
 <p></p>
 
-Once the configuration is done you can test your deployment to maven repository (e.g. Nexus) by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
+Once the configuration is done you can test your deployment to the Maven repository (e.g. Nexus) by running the command `mvn clean deploy`. If the command was executed successfully a new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
 
 ## MUnit
 
-Chapter describes recommended best practices for automated unit testing. 
+This chapter describes recommended best practices for automated unit testing. 
 
 * Test coverage must be at least 80% (that includes application coverage and individual flow coverage).
-* Build should be configured to fail if percetage of test coverage is not sufficient.
-* Report generated as a result of the unit test should be archived on CI Server for future reference.
+* Build should be configured to fail if the percentage of test coverage is not sufficient.
+* Reports generated as a result of the unit test should be archived on CI Server for future reference.
 
 <details><summary>Sample Config</summary><p>
 	
@@ -158,7 +159,7 @@ A developer can never merge feature branch to main development branch directly. 
 
 Once the release is deployed to production, code from development branch is merged into Master that represents production code.
 
-Merging development branch into PROD branch should be ideally semi-automatic activity managed via CICD.
+Merging development branch into PROD branch should ideally be a semi-automatic activity managed via CICD.
 
 **Hotfix branch**
 
