@@ -1,4 +1,4 @@
-# CICD Hello World
+# CI Hello World
 
 **Automated build ready for self-service**
 
