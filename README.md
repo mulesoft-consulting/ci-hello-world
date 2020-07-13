@@ -56,7 +56,7 @@ More details can be found in official documentation:
 </p></details>
 
 #### Deploy package to Nexus
-Section provides the details of configuration that is required to enable deployment of a package to Mave repository (e.g. `Nexus`).
+Section provides the details of configuration that is required to enable deployment of a package to Maven repository (e.g. `Nexus`).
 
 <details><summary>Sample Config in pom.xml</summary><p>
 	
@@ -94,7 +94,7 @@ Section provides the details of configuration that is required to enable deploym
 </p></details>
 <p></p>
 
-Once the configuration is done you can test your deployment to mavne repository (e.g. Nexus) by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
+Once the configuration is done you can test your deployment to maven repository (e.g. Nexus) by running the command `mvn clean deploy`. If command was executed successfully new package should be visible in Nexus (either under snapshots or under releases, depending on the project version, e.g. `<version>1.0.6-SNAPSHOT</version>` would create a pacakge under snapshots).
 
 ## MUnit
 
