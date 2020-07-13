@@ -1,4 +1,4 @@
-# CICD Hello World
+# CI Hello World
 
 **Automated build ready for self-service**
 
@@ -56,6 +56,7 @@ More details can be found in the following official documentation:
 </p></details>
 
 #### Deploy package to Nexus
+
 This section provides details of the configuration required to enable deployment of a package to a Maven repository (e.g. `Nexus`).
 
 <details><summary>Sample Config in pom.xml</summary><p>
