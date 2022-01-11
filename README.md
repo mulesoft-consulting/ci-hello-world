@@ -319,7 +319,7 @@ To enable maven release plugin to commit changes to repository following configu
 
 </p></details>
 
-## How to use `cicd-hello-world`
+## How to use `ci-hello-world`
 This project implements all patterns discussed above. It gives us the ability to quickly test and prove design decisions and configuration.
 
 ## Recommendations
